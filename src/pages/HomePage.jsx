@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import MyFavourites from '../components/MyFavourites';
 import Header from '../components/Header';
-import NewsItem from '../components/NewsItem';
+import NewsItem from '../components/NewsItems';
 
 const drawerWidth = 240;
 

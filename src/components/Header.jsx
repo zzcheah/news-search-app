@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import {useNavigate} from 'react-router-dom';
+import {SearchContext} from '../contexts/SearchContext';
 
 const menuId = 'account-menu';
 
@@ -59,6 +60,7 @@ export default function Header(props) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
+  const {keyword, setKeyword} = React.useContext(SearchContext);
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -102,6 +104,8 @@ export default function Header(props) {
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Search…"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
             // inputProps={{'aria-label': 'search'}}
           />
         </Search>
