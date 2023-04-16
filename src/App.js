@@ -26,7 +26,11 @@ function App() {
               <Route
                 path="/home"
                 element={
-                  isLoggedIn ? <HomePage /> : <Navigate to="/login" replace />
+                  isLoggedIn ? (
+                    <HomePage setIsLoggedIn={setIsLoggedIn} />
+                  ) : (
+                    <Navigate to="/login" replace />
+                  )
                 }
               />
               <Route

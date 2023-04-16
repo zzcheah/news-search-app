@@ -5,13 +5,19 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import Typography from '@mui/material/Typography';
+import {useContext} from 'react';
+import {SearchContext} from '../contexts/SearchContext';
+import {Link} from 'react-router-dom';
+import {Button} from '@mui/material';
 
 export default function MyFavourites({drawerWidth}) {
+  const {favouriteList, doRemoveFavourite, doRemoveAllFavourite} =
+    useContext(SearchContext);
+
   return (
     <Drawer
       variant="permanent"
@@ -27,23 +33,48 @@ export default function MyFavourites({drawerWidth}) {
       </Typography>
       <Divider />
       <Box sx={{overflow: 'auto'}}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {favouriteList && favouriteList.length > 0 ? (
+          <List dense>
+            {favouriteList.map((news, index) => (
+              <ListItem
+                key={`favourite-${index}`}
+                disablePadding
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => doRemoveFavourite(news.title)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemButton
+                  LinkComponent={Link}
+                  to={news.url}
+                  target="_blank"
+                >
+                  <ListItemText primary={news.title} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <Typography variant="p" noWrap component="div" sx={{margin: 2}}>
+            No Favourite yet
+          </Typography>
+        )}
       </Box>
       <Divider />
-      <Typography variant="p" noWrap component="div" sx={{margin: 2}}>
+      <Button
+        size="small"
+        color="secondary"
+        variant="outlined"
+        sx={{margin: 2}}
+        onClick={() => doRemoveAllFavourite()}
+      >
         Delete all favourites
-      </Typography>
+      </Button>
     </Drawer>
   );
 }

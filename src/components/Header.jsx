@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import {useNavigate} from 'react-router-dom';
 import {SearchContext} from '../contexts/SearchContext';
+import {Button} from '@mui/material';
 
 const menuId = 'account-menu';
 
@@ -56,11 +57,13 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
   },
 }));
 
-export default function Header(props) {
+export default function Header({setIsLoggedIn}) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
-  const {keyword, setKeyword} = React.useContext(SearchContext);
+  const [localKeyword, setLocalKeyword] = React.useState('');
+
+  const {doSearch} = React.useContext(SearchContext);
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -69,6 +72,7 @@ export default function Header(props) {
   const doLogout = () => {
     setAnchorEl(null);
     localStorage.removeItem('user');
+    setIsLoggedIn(false);
     navigate('/login');
   };
 
@@ -104,11 +108,18 @@ export default function Header(props) {
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Search…"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
+            value={localKeyword}
+            onChange={e => setLocalKeyword(e.target.value)}
             // inputProps={{'aria-label': 'search'}}
           />
         </Search>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => doSearch(localKeyword)}
+        >
+          Search
+        </Button>
         <Box sx={{flexGrow: 1}} />
         <IconButton
           size="large"

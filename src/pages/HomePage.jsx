@@ -8,11 +8,11 @@ import NewsItem from '../components/NewsItems';
 
 const drawerWidth = 240;
 
-function HomePage() {
+function HomePage({setIsLoggedIn}) {
   return (
     <Box sx={{display: 'flex'}}>
       <CssBaseline />
-      <Header />
+      <Header setIsLoggedIn={setIsLoggedIn} />
       <MyFavourites drawerWidth={drawerWidth} />
       <NewsItem />
     </Box>
